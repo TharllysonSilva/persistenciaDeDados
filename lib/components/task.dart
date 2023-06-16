@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:nosso_primeiro_projeto/components/difficulty.dart';
 
-
+// ignore: must_be_immutable
 class Task extends StatefulWidget {
   final String nome;
   final String foto;
   final int dificuldade;
   int nivel;
-  Task(this.nome, this.foto, this.dificuldade, [this.nivel = 0, Key? key,])
-      : super(key: key);
-
-
-
+  Task(
+    this.nome,
+    this.foto,
+    this.dificuldade, [
+    this.nivel = 0,
+    Key? key,
+  ]) : super(key: key);
 
   @override
   State<Task> createState() => _TaskState();
 }
 
 class _TaskState extends State<Task> {
-
   bool assetOrNetwork() {
     if (widget.foto.contains('http')) {
       return false;
