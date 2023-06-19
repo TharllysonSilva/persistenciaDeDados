@@ -92,7 +92,7 @@ class _TaskState extends State<Task> {
                       width: 52,
                       child: ElevatedButton(
                           onPressed: () {
-                            print(widget.nivel);
+                            // print(widget.nivel);
                             setState(() {
                               widget.nivel++;
                             });
