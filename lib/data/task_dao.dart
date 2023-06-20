@@ -13,7 +13,34 @@ class TaskDao {
   static const String _difficulty = 'difficulty';
   static const String _image = 'image';
 
-  save(Task tarefa) async {}
+  save(Task tarefa) async {
+    print('Iniciando o save: ');
+    final Database bancoDeDados = await getDatabase();
+    var itemExist = await find(tarefa.nome);
+    Map<String, dynamic> taskMap = toMap(tarefa);
+    if (itemExist.isEmpty) {
+      print('Tarefa não existia!');
+      return await bancoDeDados.insert(_tablename, taskMap);
+    } else {
+      print('Tarefa já existia!');
+      return await bancoDeDados.update(
+        _tablename,
+        taskMap,
+        where: '$_name = ?',
+        whereArgs: [tarefa.nome],
+      );
+    }
+  }
+
+  Map<String, dynamic> toMap(Task tarefa) {
+    print('Convertando Tarefa em Map');
+    final Map<String, dynamic> mapaDeTarefas = Map();
+    mapaDeTarefas[_name] = tarefa.nome;
+    mapaDeTarefas[_difficulty] = tarefa.dificuldade;
+    mapaDeTarefas[_image] = tarefa.foto;
+    print('Mapa de Tarefas: $mapaDeTarefas');
+    return mapaDeTarefas;
+  }
 
   Future<List<Task>> findAll() async {
     print('Acessando o findAll: ');
