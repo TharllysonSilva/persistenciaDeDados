@@ -25,12 +25,63 @@ class _InitialScreenState extends State<InitialScreen> {
             future: TaskDao().findAll(),
             builder: (context, snapshot) {
               List<Task>? items = snapshot.data;
-              return ListView.builder(
-                  itemCount: items.length,
-                  itemBuilder: (BuildContext context, index) {
-                    final Task tarefa = items[index];
-                    return tarefa;
-                  });
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return Center(
+                    child: Column(
+                      children: [
+                        CircularProgressIndicator(),
+                        Text('Carregando')
+                      ],
+                    ),
+                  );
+                  break;
+                case ConnectionState.waiting:
+                  return Center(
+                    child: Column(
+                      children: [
+                        CircularProgressIndicator(),
+                        Text('Carregando')
+                      ],
+                    ),
+                  );
+                  break;
+                case ConnectionState.active:
+                  return Center(
+                    child: Column(
+                      children: [
+                        CircularProgressIndicator(),
+                        Text('Carregando')
+                      ],
+                    ),
+                  );
+                  break;
+                case ConnectionState.done:
+                  if (snapshot.hasData && items != null) {
+                    if (items.isNotEmpty) {
+                      return ListView.builder(
+                          itemCount: items.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final Task tarefa = items[index];
+                            return tarefa;
+                          });
+                    }
+                    return Center(
+                      child: Column(
+                        children: [
+                          Icon(Icons.error_outline, size: 128),
+                          Text(
+                            'Não há Tarefa',
+                            style: TextStyle(fontSize: 32),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  return Text('Erro ao carregar Tarefas ');
+                  break;
+              }
+              return Text('Erro desconhecido');
             }),
       ),
       floatingActionButton: FloatingActionButton(
