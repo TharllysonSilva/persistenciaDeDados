@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nosso_primeiro_projeto/components/task.dart';
 import 'package:nosso_primeiro_projeto/data/task_dao.dart';
-import 'package:nosso_primeiro_projeto/data/task_inherited.dart';
 import 'package:nosso_primeiro_projeto/screens/form_screen.dart';
 
 class InitialScreen extends StatefulWidget {
@@ -16,18 +15,19 @@ class _InitialScreenState extends State<InitialScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Container(),
         actions: [
           IconButton(
-              onPressed: () {
-                setState(() {});
-              },
-              icon: const Icon(Icons.refresh))
+            onPressed: () {
+              setState(() {});
+            },
+            icon: const Icon(Icons.refresh),
+          ),
         ],
-        leading: Container(),
         title: const Text('Tarefas'),
       ),
       body: Padding(
-        padding: EdgeInsets.only(top: 8, bottom: 70),
+        padding: const EdgeInsets.only(top: 8, bottom: 70),
         child: FutureBuilder<List<Task>>(
             future: TaskDao().findAll(),
             builder: (context, snapshot) {
@@ -36,33 +36,31 @@ class _InitialScreenState extends State<InitialScreen> {
                 case ConnectionState.none:
                   return Center(
                     child: Column(
-                      children: [
+                      children: const [
                         CircularProgressIndicator(),
-                        Text('Carregando')
+                        Text('Carregando'),
                       ],
                     ),
                   );
-                  break;
+
                 case ConnectionState.waiting:
                   return Center(
                     child: Column(
-                      children: [
+                      children: const [
                         CircularProgressIndicator(),
-                        Text('Carregando')
+                        Text('Carregando'),
                       ],
                     ),
                   );
-                  break;
                 case ConnectionState.active:
                   return Center(
                     child: Column(
-                      children: [
+                      children: const [
                         CircularProgressIndicator(),
-                        Text('Carregando')
+                        Text('Carregando'),
                       ],
                     ),
                   );
-                  break;
                 case ConnectionState.done:
                   if (snapshot.hasData && items != null) {
                     if (items.isNotEmpty) {
@@ -74,21 +72,26 @@ class _InitialScreenState extends State<InitialScreen> {
                           });
                     }
                     return Center(
-                      child: Column(
-                        children: [
-                          Icon(Icons.error_outline, size: 128),
-                          Text(
-                            'Não há Tarefa',
-                            style: TextStyle(fontSize: 32),
-                          ),
-                        ],
-                      ),
-                    );
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      // não implementado em vídeo por descuido meu, desculpem.
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      // essa linha de layout deixa o conteudo totalmente centralizado.
+                      children: const [
+                        Icon(
+                          Icons.error_outline,
+                          size: 128,
+                        ),
+                        Text(
+                          'Não há nenhuma Tarefa',
+                          style: TextStyle(fontSize: 32),
+                        ),
+                      ],
+                    ));
                   }
-                  return Text('Erro ao carregar Tarefas ');
-                  break;
+                  return const Text('Erro ao carregar tarefas');
               }
-              return Text('Erro desconhecido');
+              return const Text('Erro desconhecido');
             }),
       ),
       floatingActionButton: FloatingActionButton(
@@ -101,7 +104,7 @@ class _InitialScreenState extends State<InitialScreen> {
               ),
             ),
           ).then((value) => setState(() {
-                print('Recarregando tela inicial');
+                print('Recarregando a tela inicial');
               }));
         },
         child: const Icon(Icons.add),
