@@ -16,13 +16,13 @@ class TaskDao {
   save(Task tarefa) async {
     print('Iniciando o save: ');
     final Database bancoDeDados = await getDatabase();
-    var itemExist = await find(tarefa.nome);
+    var itemExists = await find(tarefa.nome);
     Map<String, dynamic> taskMap = toMap(tarefa);
-    if (itemExist.isEmpty) {
-      print('Tarefa não existia!');
+    if (itemExists.isEmpty) {
+      print('a Tarefa não Existia.');
       return await bancoDeDados.insert(_tablename, taskMap);
     } else {
-      print('Tarefa já existia!');
+      print('a Tarefa existia!');
       return await bancoDeDados.update(
         _tablename,
         taskMap,
@@ -33,7 +33,7 @@ class TaskDao {
   }
 
   Map<String, dynamic> toMap(Task tarefa) {
-    print('Convertando Tarefa em Map');
+    print('Convertendo to Map: ');
     final Map<String, dynamic> mapaDeTarefas = Map();
     mapaDeTarefas[_name] = tarefa.nome;
     mapaDeTarefas[_difficulty] = tarefa.dificuldade;
@@ -69,19 +69,18 @@ class TaskDao {
   Future<List<Task>> find(String nomeDaTarefa) async {
     print('Acessando find: ');
     final Database bancoDeDados = await getDatabase();
-    final List<Map<String, dynamic>> result = await bancoDeDados.query(
-      _tablename,
-      where: '$_name',
-      whereArgs: [nomeDaTarefa],
-    );
+    print('Procurando tarefa com o nome: ${nomeDaTarefa}');
+    final List<Map<String, dynamic>> result = await bancoDeDados
+        .query(_tablename, where: '$_name = ?', whereArgs: [nomeDaTarefa]);
     print('Tarefa encontrada: ${toList(result)}');
+
     return toList(result);
   }
 
   delete(String nomeDaTarefa) async {
     print('Deletando tarefa: $nomeDaTarefa');
     final Database bancoDeDados = await getDatabase();
-    return bancoDeDados.delete(
+    return await bancoDeDados.delete(
       _tablename,
       where: '$_name = ?',
       whereArgs: [nomeDaTarefa],
