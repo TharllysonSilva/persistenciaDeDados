@@ -21,7 +21,7 @@ class _InitialScreenState extends State<InitialScreen> {
               onPressed: () {
                 setState(() {});
               },
-              icon: const Icon(Icons.refresh))
+              icon: const Icon(Icosns.refresh))
         ],
         leading: Container(),
         title: const Text('Tarefas'),
