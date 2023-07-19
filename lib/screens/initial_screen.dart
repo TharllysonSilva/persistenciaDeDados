@@ -91,7 +91,6 @@ class _InitialScreenState extends State<InitialScreen> {
                   }
                   return const Text('Erro ao carregar tarefas');
               }
-              return const Text('Erro desconhecido');
             }),
       ),
       floatingActionButton: FloatingActionButton(
@@ -103,9 +102,11 @@ class _InitialScreenState extends State<InitialScreen> {
                 taskContext: context,
               ),
             ),
-          ).then((value) => setState(() {
-                print('Recarregando a tela inicial');
-              }));
+          ).then(
+            (value) => setState(
+              () {},
+            ),
+          );
         },
         child: const Icon(Icons.add),
       ),
